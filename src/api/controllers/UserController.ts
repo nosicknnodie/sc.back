@@ -3,7 +3,7 @@ import {
 } from 'routing-controllers';
 
 import { UserNotFoundError } from '../errors/UserNotFoundError';
-import { User } from '../models/User';
+import { User } from '../models';
 import { UserService } from '../services/UserService';
 
 @Authorized()
