@@ -13,7 +13,7 @@ export class AccountRealTime extends BaseModel {
     public clubIdx: string;
 
     @IsNotEmpty()
-    @Column({ type: 'char', name: 'type_ie', length: 1 })
+    @Column({ name: 'type_ie', length: 1 })
     public typeIe: string;
 
     @IsNotEmpty()
@@ -34,7 +34,7 @@ export class AccountRealTime extends BaseModel {
     @Column({ name: 'ie_dt' })
     public ieDt: Date;
 
-    @Column({ type: 'char', name: 'use_yn', length: 1 })
+    @Column({ name: 'use_yn', length: 1 })
     public useYn: string;
 
     @ManyToOne(() => ClubUser, clubUser => clubUser.accountRealTimes)

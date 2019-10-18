@@ -12,11 +12,11 @@ export class AccountMonth extends BaseModel {
     public clubIdx: string;
 
     @IsNotEmpty()
-    @Column({ type: 'char', name: 'year', length: 4 })
+    @Column({ name: 'year', length: 4 })
     public year: string;
 
     @IsNotEmpty()
-    @Column({ type: 'char', name: 'mm', length: 2 })
+    @Column({ name: 'mm', length: 2 })
     public mm: string;
 
     @IsNotEmpty()

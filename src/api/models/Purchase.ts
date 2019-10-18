@@ -12,7 +12,7 @@ export class Purchase extends BaseModel {
     public clubIdx: string;
 
     @IsNotEmpty()
-    @Column({ name: 'stuff_type', type: 'char', length: 4 })
+    @Column({ name: 'stuff_type', length: 4 })
     public stuffType: string;
 
     @IsNotEmpty()

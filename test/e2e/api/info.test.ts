@@ -1,6 +1,6 @@
+import { env } from 'src/env';
 import request from 'supertest';
 
-import { env } from '../../../src/env';
 import { bootstrapApp, BootstrapSettings } from '../utils/bootstrap';
 
 describe('/api', () => {

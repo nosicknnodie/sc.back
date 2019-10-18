@@ -21,7 +21,7 @@ export class Match extends BaseModel {
     public matchClubName: string;
 
     @IsNotEmpty()
-    @Column({ name: 'self_yn', type: 'char', length: 1 })
+    @Column({ name: 'self_yn', length: 1 })
     public selfYn: string;
 
     @ManyToOne(type => Club, club => club.matchs)
