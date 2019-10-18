@@ -1,78 +1,65 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1511105183653 implements MigrationInterface {
+export class CreateMatchQuaterTable1570788461677 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'user',
+            name: 'match_quater',
             columns: [
                 {
                     name: 'idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: true,
-                    isNullable: false,
+                    isNullable: true,
                 }, {
-                    name: 'email',
+                    name: 'match_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    isUnique: true,
-                    comment: '이메일',
+                    comment: '매칭IDX',
                 }, {
-                    name: 'password',
+                    name: 'seq',
+                    type: 'int',
+                    isPrimary: false,
+                    isNullable: false,
+                    comment: 'SEQ',
+                }, {
+                    name: 'l_team_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '암호',
+                    comment: 'L팀IDX',
                 }, {
-                    name: 'name',
+                    name: 'l_team_name',
                     type: 'varchar',
                     length: '50',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '이름',
+                    comment: 'L팀명',
                 }, {
-                    name: 'en_name',
+                    name: 'r_team_idx',
+                    type: 'varchar',
+                    length: '255',
+                    isPrimary: false,
+                    isNullable: false,
+                    comment: 'R팀IDX',
+                }, {
+                    name: 'r_team_name',
+                    type: 'varchar',
+                    length: '50',
+                    isPrimary: false,
+                    isNullable: false,
+                    comment: 'R팀명',
+                }, {
+                    name: 'referee',
                     type: 'varchar',
                     length: '50',
                     isPrimary: false,
                     isNullable: true,
-                    comment: '영문이름',
-                } , {
-                    name: 'cl_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '옷상의이름',
-                }, {
-                    name: 'cl_top_size',
-                    type: 'int',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '상의사이즈',
-                }, {
-                    name: 'cl_btm_size',
-                    type: 'int',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '하의사이즈',
-                }, {
-                    name: 'both_dt',
-                    type: 'date',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '생년월일',
-                }, {
-                    name: 'pf_position',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '선호포지션',
+                    comment: '심판',
                 }, {
                     name: 'reg_dt',
                     type: 'timestamp',
@@ -94,7 +81,7 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('user');
+        await queryRunner.dropTable('match_quater');
     }
 
 }

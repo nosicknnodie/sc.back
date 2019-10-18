@@ -1,6 +1,7 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 
+import { Logger, LoggerInterface } from '../../decorators/Logger';
 import { Club as ClubModel } from '../models/Club';
 import { ClubService } from '../services/ClubService';
 import { Club } from '../types/Club';
@@ -11,7 +12,8 @@ import { ClubInput } from '../types/input/ClubInput';
 export class ClubResolver {
 
     constructor(
-        private clubService: ClubService
+        private clubService: ClubService,
+        @Logger(__filename) private log: LoggerInterface
     ) {}
 
     @Query(returns => [Club])
@@ -19,12 +21,19 @@ export class ClubResolver {
       return this.clubService.find();
     }
 
+    @Query(returns => Club)
+    public club(@Arg('idx') idx: string): Promise<ClubModel | undefined> {
+      return this.clubService.findOne(idx);
+    }
+
     @Mutation(returns => Club)
     public async addClub(@Arg('club') club: ClubInput): Promise<ClubModel> {
-        const newClub = new ClubModel();
-        newClub.name = club.name;
-        newClub.mainPlace = club.mainPlace;
-        newClub.description = club.description;
-        return this.clubService.create(newClub);
+        return this.clubService.create(new ClubModel().trasforToModel(club));
+    }
+
+    @Mutation(returns => Club)
+    public async editClub(@Arg('club') club: ClubInput): Promise<ClubModel> {
+        this.log.debug('edit club');
+        return this.clubService.update(club.idx, new ClubModel().trasforToModel(club));
     }
 }

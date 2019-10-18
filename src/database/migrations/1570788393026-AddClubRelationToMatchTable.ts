@@ -1,20 +1,21 @@
 import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
 
-export class AddUserRelationToPetTable1512663990063 implements MigrationInterface {
+export class AddClubRelationToMatchTable1570788393026 implements MigrationInterface {
 
     private tableForeignKey = new TableForeignKey({
-        name: 'fk_user_pet',
-        columnNames: ['user_id'],
+        name: 'fk_club_match',
+        columnNames: ['club_idx'],
         referencedColumnNames: ['idx'],
-        referencedTableName: 'user',
+        referencedTableName: 'club',
         onDelete: 'CASCADE',
     });
 
     public async up(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.createForeignKey('pet', this.tableForeignKey);
+        await queryRunner.createForeignKey('match', this.tableForeignKey);
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropForeignKey('pet', this.tableForeignKey);
+        await queryRunner.dropForeignKey('match', this.tableForeignKey);
     }
+
 }

@@ -8,26 +8,47 @@ import { Pet } from './Pet';
 export class User {
 
     @Field(type => ID)
-    public id: string;
+    public idx: string;
 
     @Field({
-        description: 'The first name of the user.',
+        description: '회원명',
     })
-    public firstName: string;
+    public name: string;
 
     @Field({
-        description: 'The last name of the user.',
-    })
-    public lastName: string;
-
-    @Field({
-        description: 'The email of the user.',
+        description: '이메일',
     })
     public email: string;
+    @Field({
+        description: '영문이름',
+    })
+    public enName: string;
+    @Field({
+        description: '유니폼이름',
+    })
+    public clName: string;
+    @Field({
+        description: '유니폼 상의 사이즈',
+    })
+    public clTopSize: string;
+    @Field({
+        description: '유니폼 하의 사이즈',
+    })
+    public clBtmSize: string;
+    @Field({
+        description: '생년월일',
+    })
+    public bothDt: Date;
+    @Field({
+        description: '선호포지션(필수아님)',
+    })
+    public pfPosition: string;
 
     @Field(type => [Pet], {
-        description: 'A list of pets which belong to the user.',
+        description: '유저에 대한 펫리스트',
     })
     public pets: Pet[];
+
+    public password: string;
 
 }

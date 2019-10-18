@@ -6,20 +6,28 @@ import { Field, ID, ObjectType } from 'type-graphql';
 export class Club {
 
     @Field(type => ID)
-    public id: string;
+    public idx: string;
 
     @Field({
-        description: 'The name of the club.',
+        description: '클럽명',
     })
     public name: string;
 
     @Field({
-        description: 'The main place of the club.',
+        description: 'The main area of the club.',
+        nullable: true,
     })
-    public mainPlace: string;
+    public area: string;
 
     @Field({
-        description: 'The description of the club.',
+        description: 'The title of the club.',
+        nullable: true,
+    })
+    public title: string;
+
+    @Field({
+        description: 'The title of the club.',
+        nullable: true,
     })
     public description: string;
 

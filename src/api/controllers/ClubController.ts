@@ -19,10 +19,10 @@ export class ClubController {
         return this.clubService.find();
     }
 
-    @Get('/:id')
+    @Get('/:idx')
     @OnUndefined(NotFoundError)
-    public one(@Param('id') id: string): Promise<Club | undefined> {
-        return this.clubService.findOne(id);
+    public one(@Param('idx') idx: string): Promise<Club | undefined> {
+        return this.clubService.findOne(idx);
     }
 
     @Post()
@@ -30,14 +30,14 @@ export class ClubController {
         return this.clubService.create(club);
     }
 
-    @Put('/:id')
-    public update(@Param('id') id: string, @Body() club: Club): Promise<Club> {
-        return this.clubService.update(id, club);
+    @Put('/:idx')
+    public update(@Param('idx') idx: string, @Body() club: Club): Promise<Club> {
+        return this.clubService.update(idx, club);
     }
 
-    @Delete('/:id')
-    public delete(@Param('id') id: string): Promise<void> {
-        return this.clubService.delete(id);
+    @Delete('/:idx')
+    public delete(@Param('idx') idx: string): Promise<void> {
+        return this.clubService.delete(idx);
     }
 
 }

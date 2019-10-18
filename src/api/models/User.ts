@@ -1,12 +1,16 @@
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty } from 'class-validator';
-import { BeforeInsert, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { IsEmail, IsNotEmpty } from 'class-validator';
+import { BeforeInsert, Column, Entity, OneToMany, Unique } from 'typeorm';
 
+import { UserInput } from '../types/input/UserInput';
+import { BaseModel } from './BaseModel';
+import { ClubUser } from './ClubUser';
 import { Pet } from './Pet';
 
-@Entity()
-export class User {
+@Unique('unique_user_email', ['email'])
+@Entity({ name : 'user' })
+export class User extends BaseModel {
 
     public static hashPassword(password: string): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -27,19 +31,9 @@ export class User {
         });
     }
 
-    @PrimaryColumn('uuid')
-    public id: string;
-
-    @IsNotEmpty()
-    @Column({ name: 'first_name' })
-    public firstName: string;
-
-    @IsNotEmpty()
-    @Column({ name: 'last_name' })
-    public lastName: string;
-
     @IsNotEmpty()
     @Column()
+    @IsEmail({}, {message: '이메일이 아닙니다.'})
     public email: string;
 
     @IsNotEmpty()
@@ -48,14 +42,37 @@ export class User {
     public password: string;
 
     @IsNotEmpty()
-    @Column()
-    public username: string;
+    @Column({ name: 'name' })
+    public name: string;
+
+    @IsNotEmpty()
+    @Column({ name: 'en_name' })
+    public enName: string;
+
+    @Column({ name: 'cl_name' })
+    public clName: string;
+
+    @Column({ name: 'cl_top_size' })
+    public clTopSize: string;
+
+    @Column({ name: 'cl_btm_size' })
+    public clBtmSize: string;
+
+    @Column({ name: 'pf_position' })
+    public pfPosition: string;
+
+    @IsNotEmpty()
+    @Column({ name: 'both_dt' })
+    public bothDt: Date;
 
     @OneToMany(type => Pet, pet => pet.user)
     public pets: Pet[];
 
+    @OneToMany(type => ClubUser, clubUser => clubUser.user)
+    public clubUsers: ClubUser[];
+
     public toString(): string {
-        return `${this.firstName} ${this.lastName} (${this.email})`;
+        return `${this.name} (${this.email})`;
     }
 
     @BeforeInsert()
@@ -63,4 +80,15 @@ export class User {
         this.password = await User.hashPassword(this.password);
     }
 
+    public trasforToModel(t: UserInput): any {
+        this.name = t.name;
+        this.email = t.email;
+        this.enName = t.enName;
+        this.bothDt = t.bothDt;
+        this.clTopSize = t.clTopSize;
+        this.clBtmSize = t.clBtmSize;
+        this.clName = t.clName;
+        this.password = t.password;
+        return this;
+    }
 }

@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1511105183653 implements MigrationInterface {
+export class CreatePurchaseTable1570627142531 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'user',
+            name: 'purchase',
             columns: [
                 {
                     name: 'idx',
@@ -13,66 +13,50 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
                     isPrimary: true,
                     isNullable: false,
                 }, {
-                    name: 'email',
+                    name: 'club_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    isUnique: true,
-                    comment: '이메일',
+                    comment: '클럽IDX',
                 }, {
-                    name: 'password',
-                    type: 'varchar',
-                    length: '255',
+                    name: 'stuff_type',
+                    type: 'char',
+                    length: '4',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '암호',
+                    comment: '물품타입',
                 }, {
                     name: 'name',
                     type: 'varchar',
                     length: '50',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '이름',
+                    comment: '물품명',
                 }, {
-                    name: 'en_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '영문이름',
-                } , {
-                    name: 'cl_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '옷상의이름',
-                }, {
-                    name: 'cl_top_size',
+                    name: 'price',
                     type: 'int',
                     isPrimary: false,
-                    isNullable: true,
-                    comment: '상의사이즈',
+                    isNullable: false,
+                    comment: '물품개당가격',
                 }, {
-                    name: 'cl_btm_size',
+                    name: 'amount',
                     type: 'int',
                     isPrimary: false,
-                    isNullable: true,
-                    comment: '하의사이즈',
+                    isNullable: false,
+                    comment: '갯수',
                 }, {
-                    name: 'both_dt',
-                    type: 'date',
+                    name: 'all_price',
+                    type: 'int',
                     isPrimary: false,
-                    isNullable: true,
-                    comment: '생년월일',
+                    isNullable: false,
+                    comment: '총가격',
                 }, {
-                    name: 'pf_position',
-                    type: 'varchar',
-                    length: '50',
+                    name: 'pur_dt',
+                    type: 'timestamp',
                     isPrimary: false,
-                    isNullable: true,
-                    comment: '선호포지션',
+                    isNullable: false,
+                    comment: '구매일',
                 }, {
                     name: 'reg_dt',
                     type: 'timestamp',
@@ -94,7 +78,7 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('user');
+        await queryRunner.dropTable('purchase');
     }
 
 }

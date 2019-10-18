@@ -19,31 +19,35 @@ export class UserService {
 
     public find(): Promise<User[]> {
         this.log.info('Find all users');
-        return this.userRepository.find({ relations: ['pets'] });
+        return this.userRepository.find({ relations: ['pets', 'clubUsers'] });
     }
 
-    public findOne(id: string): Promise<User | undefined> {
+    public findOne(idx: string): Promise<User | undefined> {
         this.log.info('Find one user');
-        return this.userRepository.findOne({ id });
+        return this.userRepository.findOne({ idx });
     }
 
-    public async create(user: User): Promise<User> {
+    public async create(user: User): Promise<User | undefined> {
+        user.idx = uuid.v1();
         this.log.info('Create a new user => ', user.toString());
-        user.id = uuid.v1();
-        const newUser = await this.userRepository.save(user);
-        this.eventDispatcher.dispatch(events.user.created, newUser);
-        return newUser;
+        const usered = await this.userRepository.findOne({ email: user.email });
+        if (usered === undefined) {
+            const newUser = await this.userRepository.save(user);
+            this.eventDispatcher.dispatch(events.user.created, newUser);
+            return newUser;
+        }
+        return usered;
     }
 
-    public update(id: string, user: User): Promise<User> {
+    public update(idx: string, user: User): Promise<User> {
         this.log.info('Update a user');
-        user.id = id;
+        user.idx = idx;
         return this.userRepository.save(user);
     }
 
-    public async delete(id: string): Promise<void> {
+    public async delete(idx: string): Promise<void> {
         this.log.info('Delete a user');
-        await this.userRepository.delete(id);
+        await this.userRepository.delete(idx);
         return;
     }
 

@@ -22,28 +22,29 @@ export class ClubService {
         return this.clubRepository.find();
     }
 
-    public findOne(id: string): Promise<Club | undefined> {
+    public findOne(idx: string): Promise<Club | undefined> {
         this.log.info('Find one club');
-        return this.clubRepository.findOne({ id });
+        return this.clubRepository.findOne({ idx });
     }
 
     public async create(club: Club): Promise<Club> {
+        club.idx = uuid.v1();
         this.log.info('Create a new club => ', club.toString());
-        club.id = uuid.v1();
         const newClub = await this.clubRepository.save(club);
         this.eventDispatcher.dispatch(events.club.created, newClub);
         return newClub;
     }
 
-    public update(id: string, club: Club): Promise<Club> {
+    public update(idx: string, club: Club): Promise<Club> {
         this.log.info('Update a club');
-        club.id = id;
+        club.idx = idx;
+        // club.edtDt = new Date(Date.now());
         return this.clubRepository.save(club);
     }
 
-    public async delete(id: string): Promise<void> {
+    public async delete(idx: string): Promise<void> {
         this.log.info('Delete a club');
-        await this.clubRepository.delete(id);
+        await this.clubRepository.delete(idx);
         return;
     }
 

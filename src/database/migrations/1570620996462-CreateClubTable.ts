@@ -1,53 +1,58 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateClubs1564997640464 implements MigrationInterface {
+export class CreateClubTable1570620996462 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'clubs_tb',
+            name: 'club',
             columns: [
                 {
-                    name: 'id',
+                    name: 'idx',
                     type: 'varchar',
-                    length: '45',
+                    length: '255',
                     isPrimary: true,
                     isNullable: false,
-                    comment: 'key',
                 }, {
                     name: 'name',
-                    type: 'varchar',
-                    length: '100',
-                    isPrimary: false,
-                    isNullable: false,
-                    comment: '클럽명',
-                }, {
-                    name: 'main_place',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '메인구장',
+                    comment: '클럽명',
+                }, {
+                    name: 'title',
+                    type: 'varchar',
+                    length: '500',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '소개타이틀',
                 }, {
                     name: 'description',
-                    type: 'varchar',
-                    length: '1000',
+                    type: 'text',
                     isPrimary: false,
-                    isNullable: false,
-                    comment: '설명',
+                    isNullable: true,
+                    comment: '소개설명',
                 }, {
-                    name: 'crt_dt',
+                    name: 'area',
+                    type: 'varchar',
+                    length: '255',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '지역명',
+                }, {
+                    name: 'reg_dt',
                     type: 'timestamp',
                     isPrimary: false,
                     isNullable: false,
-                    default: 'current_timestamp',
-                    comment: '생성일',
+                    comment: '등록일',
+                    default: 'CURRENT_TIMESTAMP',
                 }, {
                     name: 'edt_dt',
                     type: 'timestamp',
                     isPrimary: false,
                     isNullable: false,
-                    default: 'current_timestamp',
                     comment: '수정일',
+                    default: 'CURRENT_TIMESTAMP',
                 },
             ],
         });
@@ -55,7 +60,7 @@ export class CreateClubs1564997640464 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('clubs_tb');
+        await queryRunner.dropTable('club');
     }
 
 }

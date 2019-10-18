@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1511105183653 implements MigrationInterface {
+export class CreateAccountRealtimeTable1570625518600 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'user',
+            name: 'account_realtime',
             columns: [
                 {
                     name: 'idx',
@@ -13,66 +13,59 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
                     isPrimary: true,
                     isNullable: false,
                 }, {
-                    name: 'email',
+                    name: 'club_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    isUnique: true,
-                    comment: '이메일',
+                    comment: '클럽IDX',
                 }, {
-                    name: 'password',
-                    type: 'varchar',
-                    length: '255',
+                    name: 'type_ie',
+                    type: 'char',
+                    length: '1',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '암호',
+                    comment: '입출금타입I or E',
+                }, {
+                    name: 'price',
+                    type: 'int',
+                    isPrimary: false,
+                    isNullable: false,
+                    comment: '금액',
                 }, {
                     name: 'name',
                     type: 'varchar',
                     length: '50',
                     isPrimary: false,
+                    isNullable: true,
+                    comment: '입금자명',
+                }, {
+                    name: 'club_user_idx',
+                    type: 'varchar',
+                    length: '255',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '입금자 회원IDX',
+                }, {
+                    name: 'description',
+                    type: 'varchar',
+                    length: '255',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '비고',
+                }, {
+                    name: 'ie_dt',
+                    type: 'timestamp',
+                    isPrimary: false,
                     isNullable: false,
-                    comment: '이름',
+                    comment: '입금일자',
                 }, {
-                    name: 'en_name',
-                    type: 'varchar',
-                    length: '50',
+                    name: 'use_yn',
+                    type: 'char',
+                    length: '1',
                     isPrimary: false,
                     isNullable: true,
-                    comment: '영문이름',
-                } , {
-                    name: 'cl_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '옷상의이름',
-                }, {
-                    name: 'cl_top_size',
-                    type: 'int',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '상의사이즈',
-                }, {
-                    name: 'cl_btm_size',
-                    type: 'int',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '하의사이즈',
-                }, {
-                    name: 'both_dt',
-                    type: 'date',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '생년월일',
-                }, {
-                    name: 'pf_position',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '선호포지션',
+                    comment: '사용여부y or n defatul y',
                 }, {
                     name: 'reg_dt',
                     type: 'timestamp',
@@ -94,7 +87,7 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('user');
+        await queryRunner.dropTable('account_realtime');
     }
 
 }

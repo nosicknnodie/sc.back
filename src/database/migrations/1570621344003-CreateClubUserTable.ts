@@ -1,66 +1,73 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateSubscriber1564997119832 implements MigrationInterface {
+export class CreateClubUserTable1570621344003 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'subscribers_tb',
+            name: 'club_user',
             columns: [
                 {
-                    name: 'id',
+                    name: 'idx',
                     type: 'varchar',
-                    length: '45',
+                    length: '255',
                     isPrimary: true,
                     isNullable: false,
-                    comment: 'key',
                 }, {
-                    name: 'name',
+                    name: 'club_idx',
                     type: 'varchar',
-                    length: '45',
+                    length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '이름',
+                    comment: '클럽IDX',
                 }, {
-                    name: 'api_cd',
+                    name: 'user_idx',
                     type: 'varchar',
-                    length: '45',
+                    length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    comment: 'api코드',
+                    comment: '회원IDX',
                 }, {
-                    name: 'api_id',
+                    name: 'user_name',
                     type: 'varchar',
-                    length: '45',
+                    length: '50',
                     isPrimary: false,
                     isNullable: false,
-                    comment: 'api아이디',
+                    comment: '회원이름',
                 }, {
-                    name: 'dt_of_birth',
-                    type: 'date',
-                    isPrimary: false,
-                    isNullable: false,
-                    comment: '생년월일',
-                } , {
-                    name: 'prefer_position',
+                    name: 'job_title',
                     type: 'varchar',
-                    length: '45',
+                    length: '50',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '주포지션',
+                    comment: '직책/직급',
                 }, {
-                    name: 'crt_dt',
+                    name: 'hb_position',
+                    type: 'varchar',
+                    length: '255',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '잘하는포지션',
+                }, {
+                    name: 'sb_position',
+                    type: 'varchar',
+                    length: '50',
+                    isPrimary: false,
+                    isNullable: true,
+                    comment: '보조포지션',
+                }, {
+                    name: 'reg_dt',
                     type: 'timestamp',
                     isPrimary: false,
                     isNullable: false,
-                    default: 'current_timestamp',
-                    comment: '생성일',
+                    comment: '등록일',
+                    default: 'CURRENT_TIMESTAMP',
                 }, {
                     name: 'edt_dt',
                     type: 'timestamp',
                     isPrimary: false,
                     isNullable: false,
-                    default: 'current_timestamp',
                     comment: '수정일',
+                    default: 'CURRENT_TIMESTAMP',
                 },
             ],
         });
@@ -68,7 +75,7 @@ export class CreateSubscriber1564997119832 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('subscribers_tb');
+        await queryRunner.dropTable('club_user');
     }
 
 }

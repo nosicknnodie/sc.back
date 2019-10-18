@@ -1,10 +1,10 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export class CreateUserTable1511105183653 implements MigrationInterface {
+export class CreateClubTeamMemTable1570623063956 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<any> {
         const table = new Table({
-            name: 'user',
+            name: 'club_team_mem',
             columns: [
                 {
                     name: 'idx',
@@ -13,66 +13,44 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
                     isPrimary: true,
                     isNullable: false,
                 }, {
-                    name: 'email',
+                    name: 'club_team_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    isUnique: true,
-                    comment: '이메일',
+                    comment: '클럽팀IDX',
                 }, {
-                    name: 'password',
+                    name: 'club_user_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
                     isNullable: false,
-                    comment: '암호',
+                    comment: '클럽회원IDX',
                 }, {
                     name: 'name',
                     type: 'varchar',
                     length: '50',
                     isPrimary: false,
-                    isNullable: false,
-                    comment: '이름',
-                }, {
-                    name: 'en_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
                     isNullable: true,
-                    comment: '영문이름',
-                } , {
-                    name: 'cl_name',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '옷상의이름',
+                    comment: '멤버이름',
                 }, {
-                    name: 'cl_top_size',
+                    name: 'num',
                     type: 'int',
                     isPrimary: false,
                     isNullable: true,
-                    comment: '상의사이즈',
+                    comment: '등번호',
                 }, {
-                    name: 'cl_btm_size',
+                    name: 'position_x',
                     type: 'int',
                     isPrimary: false,
                     isNullable: true,
-                    comment: '하의사이즈',
+                    comment: '포지션x',
                 }, {
-                    name: 'both_dt',
-                    type: 'date',
+                    name: 'position_y',
+                    type: 'int',
                     isPrimary: false,
                     isNullable: true,
-                    comment: '생년월일',
-                }, {
-                    name: 'pf_position',
-                    type: 'varchar',
-                    length: '50',
-                    isPrimary: false,
-                    isNullable: true,
-                    comment: '선호포지션',
+                    comment: '포지션y',
                 }, {
                     name: 'reg_dt',
                     type: 'timestamp',
@@ -94,7 +72,7 @@ export class CreateUserTable1511105183653 implements MigrationInterface {
     }
 
     public async down(queryRunner: QueryRunner): Promise<any> {
-        await queryRunner.dropTable('user');
+        await queryRunner.dropTable('club_team_mem');
     }
 
 }
