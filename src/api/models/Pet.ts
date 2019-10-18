@@ -18,13 +18,13 @@ export class Pet {
     public age: number;
 
     @Column({
-        name: 'user_id',
+        name: 'user_idx',
         nullable: true,
     })
-    public userId: string;
+    public userIdx: string;
 
     @ManyToOne(type => User, user => user.pets)
-    @JoinColumn({ name: 'user_id' })
+    @JoinColumn({ name: 'user_idx', referencedColumnName: 'idx' })
     public user: User;
 
     public toString(): string {

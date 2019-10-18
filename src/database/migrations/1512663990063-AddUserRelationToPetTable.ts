@@ -4,7 +4,7 @@ export class AddUserRelationToPetTable1512663990063 implements MigrationInterfac
 
     private tableForeignKey = new TableForeignKey({
         name: 'fk_user_pet',
-        columnNames: ['user_id'],
+        columnNames: ['user_idx'],
         referencedColumnNames: ['idx'],
         referencedTableName: 'user',
         onDelete: 'CASCADE',

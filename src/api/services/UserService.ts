@@ -19,7 +19,7 @@ export class UserService {
 
     public find(): Promise<User[]> {
         this.log.info('Find all users');
-        return this.userRepository.find({ relations: ['pets', 'clubUsers'] });
+        return this.userRepository.find();
     }
 
     public findOne(idx: string): Promise<User | undefined> {

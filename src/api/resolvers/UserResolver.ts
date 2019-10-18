@@ -1,8 +1,11 @@
+import DataLoader from 'dataloader';
 import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
 import { Service } from 'typedi';
 
+import { DLoader } from '../../decorators/DLoader';
+import { Pet as PetModel } from '../models/Pet';
 import { User as UserModel } from '../models/User';
-import { PetService } from '../services/PetService';
+import { PetRepository } from '../repositories/PetRepository';
 import { UserService } from '../services/UserService';
 import { UserInput } from '../types/input/UserInput';
 import { User } from '../types/User';
@@ -13,7 +16,8 @@ export class UserResolver {
 
     constructor(
         private userService: UserService,
-        private petService: PetService
+        // private petService: PetService,
+        @DLoader(PetRepository, {key: 'userIdx', multiple: true, method: 'findByUserIds'}) private petLoader: DataLoader<string, PetModel>
         ) {}
 
     @Query(returns => [User])
@@ -23,7 +27,8 @@ export class UserResolver {
 
     @FieldResolver()
     public async pets(@Root() user: UserModel): Promise<any> {
-        return this.petService.findByUser(user);
+        return this.petLoader.load(user.idx);
+        // return this.petService.findByUser(user);
     }
 
     @Mutation(returns => User)

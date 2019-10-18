@@ -18,7 +18,7 @@ export class PetResolver {
     constructor(
         private petService: PetService,
         @Logger(__filename) private log: LoggerInterface,
-        @DLoader(UserModel) private userLoader: DataLoader<string, UserModel>
+        @DLoader(UserModel, {key: 'idx'}) private userLoader: DataLoader<string, UserModel>
     ) { }
 
     @Query(returns => [Pet])
@@ -43,8 +43,8 @@ export class PetResolver {
 
     @FieldResolver()
     public async owner(@Root() pet: PetModel): Promise<any> {
-        if (pet.userId) {
-            return this.userLoader.load(pet.userId);
+        if (pet.userIdx) {
+            return this.userLoader.load(pet.userIdx);
         }
         // return this.userService.findOne(`${pet.userId}`);
     }

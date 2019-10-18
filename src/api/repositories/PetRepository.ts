@@ -11,7 +11,7 @@ export class PetRepository extends Repository<Pet> {
     public findByUserIds(ids: string[]): Promise<Pet[]> {
         return this.createQueryBuilder()
             .select()
-            .where(`pet.user_id IN (${ids.map(idx => `'${idx}'`).join(', ')})`)
+            .where(`"Pet"."user_idx" IN (${ids.map(idx => `'${idx}'`).join(', ')})`)
             .getMany();
     }
 

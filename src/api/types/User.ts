@@ -25,14 +25,17 @@ export class User {
     public enName: string;
     @Field({
         description: '유니폼이름',
+        nullable: true,
     })
     public clName: string;
     @Field({
         description: '유니폼 상의 사이즈',
+        nullable: true,
     })
     public clTopSize: string;
     @Field({
         description: '유니폼 하의 사이즈',
+        nullable: true,
     })
     public clBtmSize: string;
     @Field({
@@ -41,11 +44,13 @@ export class User {
     public bothDt: Date;
     @Field({
         description: '선호포지션(필수아님)',
+        nullable: true,
     })
     public pfPosition: string;
 
     @Field(type => [Pet], {
         description: '유저에 대한 펫리스트',
+        // nullable: true,
     })
     public pets: Pet[];
 

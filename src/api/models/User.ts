@@ -1,16 +1,18 @@
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import { BeforeInsert, Column, Entity, OneToMany, Unique } from 'typeorm';
+import {
+    BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, Unique,
+    UpdateDateColumn
+} from 'typeorm';
 
 import { UserInput } from '../types/input/UserInput';
-import { BaseModel } from './BaseModel';
 import { ClubUser } from './ClubUser';
 import { Pet } from './Pet';
 
 @Unique('unique_user_email', ['email'])
 @Entity({ name : 'user' })
-export class User extends BaseModel {
+export class User {
 
     public static hashPassword(password: string): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -30,6 +32,9 @@ export class User extends BaseModel {
             });
         });
     }
+
+    @PrimaryColumn('uuid')
+    public idx: string;
 
     @IsNotEmpty()
     @Column()
@@ -64,6 +69,12 @@ export class User extends BaseModel {
     @IsNotEmpty()
     @Column({ name: 'both_dt' })
     public bothDt: Date;
+
+    @CreateDateColumn({ name: 'reg_dt' })
+    public regDt: Date;
+
+    @UpdateDateColumn({ name: 'edt_dt' })
+    public edtDt: Date;
 
     @OneToMany(type => Pet, pet => pet.user)
     public pets: Pet[];

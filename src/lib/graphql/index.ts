@@ -33,13 +33,14 @@ export function createDataLoader<T>(obj: ObjectType<T>, options: CreateDataLoade
         }
     }
 
-    return new DataLoader(async (ids: number[]) => {
+    return new DataLoader(async (ids: any[]) => {
         let items = [];
         if (options.method) {
             items = await repository[options.method](ids);
         } else {
             items = await repository.findByIds(ids);
         }
+        this.console.log();
 
         const handleBatch = (arr: any[]) => options.multiple === true ? arr : arr[0];
         return ids.map(id => handleBatch(items.filter(item => item[options.key || 'id'] === id)));

@@ -27,7 +27,7 @@ export class PetService {
         this.log.info('Find all pets of the user', user.toString());
         return this.petRepository.find({
             where: {
-                userId: user.idx,
+                userIdx: user.idx,
             },
         });
     }

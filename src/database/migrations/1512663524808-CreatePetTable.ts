@@ -24,7 +24,7 @@ export class CreatePetTable1512663524808 implements MigrationInterface {
                     isPrimary: false,
                     isNullable: false,
                 }, {
-                    name: 'user_id',
+                    name: 'user_idx',
                     type: 'varchar',
                     length: '255',
                     isPrimary: false,
