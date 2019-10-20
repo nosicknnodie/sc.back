@@ -1,18 +1,23 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, FieldResolver, Mutation, Query, Resolver, Root } from 'type-graphql';
 import { Service } from 'typedi';
 
+import { DLoader } from '../../decorators/DLoader';
 import { Club as ClubModel } from '../models/Club';
+import { ClubUser as ClubUserModel } from '../models/ClubUser';
+import { ClubUserRepository } from '../repositories/ClubUserRepository';
 import { ClubService } from '../services/ClubService';
 import { Club } from '../types/Club';
 import { ClubInput } from '../types/input/ClubInput';
+
+import DataLoader = require('dataloader');
 
 @Service()
 @Resolver(of => Club)
 export class ClubResolver {
 
     constructor(
-        private clubService: ClubService
-        // @Logger(__filename) private log: LoggerInterface
+        private clubService: ClubService,
+        @DLoader(ClubUserRepository, {key: 'clubIdx', multiple: true, method: 'findByClubIds'}) private clubUserLoader: DataLoader<string, ClubUserModel>
     ) {}
 
     @Query(returns => [Club])
@@ -23,6 +28,12 @@ export class ClubResolver {
     @Query(returns => Club)
     public club(@Arg('idx') idx: string): Promise<ClubModel | undefined> {
       return this.clubService.findOne(idx);
+    }
+
+    @FieldResolver()
+    public async clubUsers(@Root() club: ClubModel): Promise<any> {
+        return this.clubUserLoader.load(club.idx);
+        // return this.petService.findByUser(user);
     }
 
     @Mutation(returns => Club)

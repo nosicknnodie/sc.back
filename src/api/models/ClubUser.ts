@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
+import { ClubUserInput } from '../types/input/ClubUserInput';
 import { AccountRealTime } from './AccountRealTime';
 import { BaseModel } from './BaseModel';
 import { Club } from './Club';
@@ -50,4 +51,13 @@ export class ClubUser extends BaseModel {
         return `${this.idx}`;
     }
 
+    public trasforToModel(t: ClubUserInput): any {
+        this.clubIdx = t.clubIdx;
+        this.userIdx = t.userIdx;
+        this.userName = t.userName;
+        this.jobTitle = t.jobTitle;
+        this.hbPosition = t.hbPosition;
+        this.sbPosition = t.sbPosition;
+        return this;
+    }
 }

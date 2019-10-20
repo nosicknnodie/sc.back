@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 
+import { ClubUser } from './ClubUser';
 import { Pet } from './Pet';
 
 @ObjectType({
@@ -53,6 +54,12 @@ export class User {
         // nullable: true,
     })
     public pets: Pet[];
+
+    @Field(type => [ClubUser], {
+        description: '유저에 대한 펫리스트',
+        // nullable: true,
+    })
+    public clubUsers: ClubUser;
 
     public password: string;
 

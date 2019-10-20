@@ -1,18 +1,16 @@
 import * as bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import { IsEmail, IsNotEmpty } from 'class-validator';
-import {
-    BeforeInsert, Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, Unique,
-    UpdateDateColumn
-} from 'typeorm';
+import { BeforeInsert, Column, Entity, OneToMany, Unique } from 'typeorm';
 
-import { UserInput } from '../types/input/UserInput';
+import { UserInput as Input } from '../types/input/UserInput';
+import { BaseModel } from './BaseModel';
 import { ClubUser } from './ClubUser';
 import { Pet } from './Pet';
 
 @Unique('unique_user_email', ['email'])
 @Entity({ name : 'user' })
-export class User {
+export class User extends BaseModel {
 
     public static hashPassword(password: string): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -32,9 +30,6 @@ export class User {
             });
         });
     }
-
-    @PrimaryColumn('uuid')
-    public idx: string;
 
     @IsNotEmpty()
     @Column()
@@ -70,12 +65,6 @@ export class User {
     @Column({ name: 'both_dt' })
     public bothDt: Date;
 
-    @CreateDateColumn({ name: 'reg_dt' })
-    public regDt: Date;
-
-    @UpdateDateColumn({ name: 'edt_dt' })
-    public edtDt: Date;
-
     @OneToMany(type => Pet, pet => pet.user)
     public pets: Pet[];
 
@@ -91,7 +80,7 @@ export class User {
         this.password = await User.hashPassword(this.password);
     }
 
-    public trasforToModel(t: UserInput): any {
+    public trasforToModel(t: Input): any {
         this.name = t.name;
         this.email = t.email;
         this.enName = t.enName;
