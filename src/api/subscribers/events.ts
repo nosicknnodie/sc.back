@@ -16,4 +16,10 @@ export const events = {
     clubUser: {
         created: 'onClubUserCreate',
     },
+    clubTeam: {
+        created: 'onClubTeamCreate',
+    },
+    clubTeamMem: {
+        created: 'onclubTeamMemCreate',
+    },
 };

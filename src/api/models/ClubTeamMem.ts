@@ -1,6 +1,7 @@
 import { IsNotEmpty } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
+import { ClubTeamMemInput } from '../types/input/ClubTeamMemInput';
 import { BaseModel } from './BaseModel';
 import { ClubTeam } from './ClubTeam';
 import { ClubUser } from './ClubUser';
@@ -38,6 +39,16 @@ export class ClubTeamMem extends BaseModel {
 
     public toString(): string {
         return `${this.name}`;
+    }
+
+    public trasforToModel(t: ClubTeamMemInput): any {
+        this.clubTeamIdx = t.clubTeamIdx;
+        this.clubUserIdx = t.clubUserIdx;
+        this.name = t.name;
+        this.num = t.num;
+        this.positionX = t.positionX;
+        this.positionY = t.positionY;
+        return this;
     }
 
 }

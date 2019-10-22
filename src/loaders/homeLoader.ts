@@ -1,5 +1,6 @@
 import * as express from 'express';
 import { MicroframeworkLoader, MicroframeworkSettings } from 'microframework-w3tec';
+import path from 'path';
 
 import { env } from '../env';
 
@@ -9,11 +10,9 @@ export const homeLoader: MicroframeworkLoader = (settings: MicroframeworkSetting
         expressApp.get(
             env.app.routePrefix,
             (req: express.Request, res: express.Response) => {
-                return res.json({
-                    name: env.app.name,
-                    version: env.app.version,
-                    description: env.app.description,
-                });
+                const filePath = path.join(__dirname, '../index.html');
+                res.sendFile(filePath);
+                return res;
             }
         );
 

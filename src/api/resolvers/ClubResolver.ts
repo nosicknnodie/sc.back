@@ -3,7 +3,9 @@ import { Service } from 'typedi';
 
 import { DLoader } from '../../decorators/DLoader';
 import { Club as ClubModel } from '../models/Club';
+import { ClubTeam as ClubTeamModel } from '../models/ClubTeam';
 import { ClubUser as ClubUserModel } from '../models/ClubUser';
+import { ClubTeamRepository } from '../repositories/ClubTeamRepository';
 import { ClubUserRepository } from '../repositories/ClubUserRepository';
 import { ClubService } from '../services/ClubService';
 import { Club } from '../types/Club';
@@ -17,7 +19,8 @@ export class ClubResolver {
 
     constructor(
         private clubService: ClubService,
-        @DLoader(ClubUserRepository, {key: 'clubIdx', multiple: true, method: 'findByClubIds'}) private clubUserLoader: DataLoader<string, ClubUserModel>
+        @DLoader(ClubUserRepository, {key: 'clubIdx', multiple: true, method: 'findByClubIds'}) private clubUserLoader: DataLoader<string, ClubUserModel>,
+        @DLoader(ClubTeamRepository, {key: 'clubIdx', multiple: true, method: 'findByClubIds'}) private clubTeamLoader: DataLoader<string, ClubTeamModel>
     ) {}
 
     @Query(returns => [Club])
@@ -33,6 +36,11 @@ export class ClubResolver {
     @FieldResolver()
     public async clubUsers(@Root() club: ClubModel): Promise<any> {
         return this.clubUserLoader.load(club.idx);
+        // return this.petService.findByUser(user);
+    }
+    @FieldResolver()
+    public async clubTeams(@Root() club: ClubModel): Promise<any> {
+        return this.clubTeamLoader.load(club.idx);
         // return this.petService.findByUser(user);
     }
 

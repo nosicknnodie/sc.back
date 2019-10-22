@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 
+import { ClubTeam } from './ClubTeam';
 import { ClubUser } from './ClubUser';
 
 @ObjectType({
@@ -38,5 +39,11 @@ export class Club {
         nullable: true,
     })
     public clubUsers: ClubUser;
+
+    @Field(type => [ClubTeam], {
+        description: '팀리스트',
+        nullable: true,
+    })
+    public clubTeams: ClubTeam;
 
 }
