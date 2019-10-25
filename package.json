@@ -1,7 +1,7 @@
 {
-  "name": "fmore.backend",
+  "name": "sc.server",
   "version": "1.0.0",
-  "description": "A delightful way to building a Node.js RESTful API Services with beautiful code written in TypeScript",
+  "description": "축구클럽 관리 API",
   "main": "src/app.ts",
   "scripts": {
     "start": "nps",

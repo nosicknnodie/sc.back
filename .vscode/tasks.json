@@ -1,14 +1,16 @@
 {
-    "version": "0.1.0",
+    "version": "2.0.0",
     "command": "npm",
-    "isShellCommand": true,
-    "suppressTaskName": true,
+    // "isShellCommand": true,
+    "type":"shell",
+    // "suppressTaskName": true,
     "tasks": [
         {
             // Build task, Cmd+Shift+B
             // "npm run build"
-            "taskName": "build",
-            "isBuildCommand": true,
+            "label": "build",
+            "command":"build",
+            "group": "build",
             "args": [
                 "run",
                 "build"
@@ -17,8 +19,11 @@
         {
             // Test task, Cmd+Shift+T
             // "npm test"
-            "taskName": "test",
-            "isTestCommand": true,
+            // "taskName": "test",
+            "label": "test",
+            "command":"test",
+            "group": "test",
+            // "isTestCommand": true,
             "args": [
                 "test"
             ]
