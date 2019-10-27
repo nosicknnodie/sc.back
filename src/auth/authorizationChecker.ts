@@ -8,7 +8,13 @@ import { AuthService } from './AuthService';
 export function authorizationChecker(connection: Connection): (action: Action, roles: any[]) => Promise<boolean> | boolean {
     const log = new Logger(__filename);
     const authService = Container.get<AuthService>(AuthService);
-
+    /**
+     * [로그인 방식]
+     * 1. 비밀번호 패스워드 DB 체크
+     * 2. 1번 success 후 Access token, refresh token 생성
+     * 3. Access token, refresh token 클라이언트 발송
+     * 4. refresh token 인증 DB 저장
+     */
     return async function innerAuthorizationChecker(action: Action, roles: string[]): Promise<boolean> {
         // here you can use request/response objects from action
         // also if decorator defines roles it needs to access the action
