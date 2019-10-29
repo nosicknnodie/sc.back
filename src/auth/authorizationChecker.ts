@@ -1,13 +1,13 @@
+import * as jwt from 'jsonwebtoken';
 import { Action } from 'routing-controllers';
-import { Container } from 'typedi';
 import { Connection } from 'typeorm';
 
+import { env } from '../env';
 import { Logger } from '../lib/logger';
-import { AuthService } from './AuthService';
 
 export function authorizationChecker(connection: Connection): (action: Action, roles: any[]) => Promise<boolean> | boolean {
     const log = new Logger(__filename);
-    const authService = Container.get<AuthService>(AuthService);
+    // const authService = Container.get<AuthService>(AuthService);
     /**
      * [로그인 방식]
      * 1. 비밀번호 패스워드 DB 체크
@@ -21,20 +21,36 @@ export function authorizationChecker(connection: Connection): (action: Action, r
         // you can use them to provide granular access check
         // checker must return either boolean (true or false)
         // either promise that resolves a boolean value
-        const credentials = authService.parseBasicAuthFromRequest(action.request);
 
-        if (credentials === undefined) {
-            log.warn('No credentials given');
+        // 토큰
+        const token = action.request.headers['x-access-token'];
+        let payload;
+
+        if (!token) {
+            log.warn('No token');
             return false;
+        } else {
+            try {
+                payload = jwt.verify(token, env.jwt.secret);
+            } catch (err) {
+                log.error(err);
+                return false;
+            }
         }
-
-        action.request.user = await authService.validateUser(credentials.username, credentials.password);
-        if (action.request.user === undefined) {
-            log.warn('Invalid credentials given');
-            return false;
-        }
-
         log.info('Successfully checked credentials');
+        action.request.user = payload;
         return true;
+        // const credentials = authService.parseBasicAuthFromRequest(action.request);
+
+        // if (credentials === undefined) {
+        //     log.warn('No credentials given');
+        //     return false;
+        // }
+
+        // action.request.user = await authService.validateUser(credentials.username, credentials.password);
+        // if (action.request.user === undefined) {
+        //     log.warn('Invalid credentials given');
+        //     return false;
+        // }
     };
 }

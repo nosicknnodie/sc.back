@@ -31,10 +31,10 @@ export class AuthService {
         return undefined;
     }
 
-    public async validateUser(username: string, password: string): Promise<User> {
+    public async validateUser(email: string, password: string): Promise<User> {
         const user = await this.userRepository.findOne({
             where: {
-                username,
+                email,
             },
         });
 
