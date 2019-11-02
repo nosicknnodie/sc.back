@@ -16,12 +16,6 @@ export function authorizationChecker(connection: Connection): (action: Action, r
      * 4. refresh token 인증 DB 저장
      */
     return async function innerAuthorizationChecker(action: Action, roles: string[]): Promise<boolean> {
-        // here you can use request/response objects from action
-        // also if decorator defines roles it needs to access the action
-        // you can use them to provide granular access check
-        // checker must return either boolean (true or false)
-        // either promise that resolves a boolean value
-
         // 토큰
         const token = action.request.headers['x-access-token'];
         let payload;

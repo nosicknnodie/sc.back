@@ -7,6 +7,7 @@ import { UserInput as Input } from '../types/input/UserInput';
 import { BaseModel } from './BaseModel';
 import { ClubUser } from './ClubUser';
 import { Pet } from './Pet';
+import { UserToken } from './UserToken';
 
 @Unique('unique_user_email', ['email'])
 @Entity({ name : 'user' })
@@ -70,6 +71,9 @@ export class User extends BaseModel {
 
     @OneToMany(type => ClubUser, clubUser => clubUser.user)
     public clubUsers: ClubUser[];
+
+    @OneToMany(type => UserToken, userToken => userToken.user)
+    public userTokens: UserToken[];
 
     public toString(): string {
         return `${this.name} (${this.email})`;
