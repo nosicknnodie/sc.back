@@ -81,5 +81,7 @@ export const env = {
     },
     jwt: {
         secret: getOsEnvOptional('JWT_SECRET'),
+        accessName: getOsEnvOptional('JWT_ACCESS_NAME'),
+        refreshName: getOsEnvOptional('JWT_REFRESH_NAME'),
     },
 };

@@ -1,3 +1,4 @@
+import cookie from 'cookie';
 import * as jwt from 'jsonwebtoken';
 import { Action } from 'routing-controllers';
 import { Connection } from 'typeorm';
@@ -15,17 +16,22 @@ export function authorizationChecker(connection: Connection): (action: Action, r
      * 3. Access token, refresh token 클라이언트 발송
      * 4. refresh token 인증 DB 저장
      */
+
     return async function innerAuthorizationChecker(action: Action, roles: string[]): Promise<boolean> {
         // 토큰
-        const token = action.request.headers['x-access-token'];
+        const cookies = cookie.parse(action.request.headers.cookie);
+        const accessToken: string|undefined = cookies[env.jwt.accessName];
+        // const token: string|undefined = action.request.cookies;
+        log.debug('token : ' + accessToken);
         let payload;
 
-        if (!token) {
+        if (!accessToken) {
             log.warn('No token');
+            // const refreshToken: string | undefined = cookies[env.jwt.refreshName];
             return false;
         } else {
             try {
-                payload = jwt.verify(token, env.jwt.secret);
+                payload = jwt.verify(accessToken, env.jwt.secret);
             } catch (err) {
                 log.error(err);
                 return false;
@@ -34,17 +40,5 @@ export function authorizationChecker(connection: Connection): (action: Action, r
         log.info('Successfully checked credentials');
         action.request.user = payload;
         return true;
-        // const credentials = authService.parseBasicAuthFromRequest(action.request);
-
-        // if (credentials === undefined) {
-        //     log.warn('No credentials given');
-        //     return false;
-        // }
-
-        // action.request.user = await authService.validateUser(credentials.username, credentials.password);
-        // if (action.request.user === undefined) {
-        //     log.warn('Invalid credentials given');
-        //     return false;
-        // }
     };
 }

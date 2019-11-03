@@ -24,7 +24,9 @@ export class UserTokenService {
     }
 
     public async create(userToken: UserToken): Promise<UserToken | undefined> {
-        userToken.idx = uuid.v1();
+        // user_idx, hostName 비교하여 있으면 수정 없으면 생성
+        const currentToken = await this.userTokenRepository.findOneOrFail({ userIdx: userToken.userIdx, hostName: userToken.hostName });
+        if (currentToken) { userToken.idx = currentToken.idx; } else { userToken.idx = uuid.v1(); }
         this.log.info('Create a new userToken => ', userToken.toString());
         return this.userTokenRepository.save(userToken);
     }

@@ -27,7 +27,7 @@ export class CreateUserTokenTable1572684806659 implements MigrationInterface {
                 }, {
                     name: 'token',
                     type: 'varchar',
-                    length: '255',
+                    length: '1000',
                     isPrimary: false,
                     isNullable: false,
                 }, {

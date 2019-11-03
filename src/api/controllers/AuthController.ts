@@ -1,9 +1,11 @@
+import { Response } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { Body, BodyParam, JsonController, Post, Res } from 'routing-controllers';
+import { BodyParam, JsonController, Post, Res } from 'routing-controllers';
 
 import { AuthService } from '../../auth/AuthService';
 import { env } from '../../env';
 import { User } from '../models/User';
+import { UserToken } from '../models/UserToken';
 import { UserTokenService } from '../services/UserTokenService';
 
 @JsonController('/auth')
@@ -20,11 +22,10 @@ export class AuthController {
      * @param res 헤더저장
      */
     @Post()
-    public async login(@Body() user: User, @BodyParam('hostName') hostName: string, @Res() res: Response): Promise<User> {
+    public async login(@BodyParam('email') email: string, @BodyParam('password') password: string, @BodyParam('hostName') hostName: string, @Res() res: Response): Promise<User> {
 
         // 1. email, password 받아서 회원이 있는지 여부 확인.
-        const authUser: User|undefined = await this.authService.validateUser(user.email, user.password);
-
+        const authUser: User|undefined = await this.authService.validateUser(email, password);
         if (authUser) {
             // 2. access token 생성
             const payload = {
@@ -32,22 +33,35 @@ export class AuthController {
                 email: authUser.email,
                 name: authUser.name,
             };
-            let options = {
-                algorithm: 'RS256',
-                exp: Math.floor(Date.now() / 1000) + (60),
-            };
-            const accessToken = jwt.sign(payload, env.jwt.secret, options);
-            res.headers.set('x-access-token', accessToken);
+            const accessToken = jwt.sign(payload, env.jwt.secret, {
+                expiresIn: '1h',
+            });
+            // res.header.set('x-access-token', accessToken);
 
             // 3. refresh token 생성
-            options = {
+            const refreshToken = jwt.sign(payload, env.jwt.secret, {
                 algorithm: 'HS256',
-                exp: Math.floor(Date.now() / 1000) + (60 * 60 * 12 * 14),   // 기간 2주
-            };
-            const refreshToken = jwt.sign(payload, env.jwt.secret, options);
+                expiresIn: '14d',   // 기간 2주
+            });
 
             // 4. refresh token db 저장
-            await this.userTokenService.findToken(authUser.idx, hostName, refreshToken);
+            const userToken = new UserToken();
+            userToken.userIdx = authUser.idx;
+            userToken.hostName = hostName;
+            userToken.token = refreshToken;
+            await this.userTokenService.create(userToken);
+            // await this.userTokenService.findToken(authUser.idx, hostName, refreshToken);
+
+            // 5. cookie access token 저장
+            res.cookie(env.jwt.accessName, accessToken, {
+                expires: new Date(Date.now() + (60 * 60 * 1000)),
+                httpOnly: true,
+            });
+            // 6. cookie refresh token 저장
+            res.cookie(env.jwt.refreshName, refreshToken, {
+                expires: new Date(Date.now() + (14 * 24 * 60 * 60 * 1000)),
+                httpOnly: true,
+            });
         }
 
         return authUser;

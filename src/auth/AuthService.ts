@@ -32,14 +32,14 @@ export class AuthService {
     }
 
     public async validateUser(email: string, password: string): Promise<User> {
-        const user = await this.userRepository.findOne({
+        const findUser = await this.userRepository.findOne({
             where: {
                 email,
             },
         });
-
-        if (await User.comparePassword(user, password)) {
-            return user;
+        this.log.debug('user.password : ' + password);
+        if (await User.comparePassword(findUser, password)) {
+            return findUser;
         }
 
         return undefined;

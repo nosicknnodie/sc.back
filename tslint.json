@@ -2,8 +2,7 @@
     "extends": "tslint:recommended",
     "rules": {
         "max-line-length": [
-            true,
-            160
+            false
         ],
         "no-unnecessary-initializer": false,
         "no-var-requires": true,

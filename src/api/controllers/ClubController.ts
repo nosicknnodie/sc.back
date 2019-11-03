@@ -2,6 +2,8 @@ import {
     Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
 } from 'routing-controllers';
 
+import { Logger } from '../../decorators/Logger';
+import { LoggerInterface } from '../../lib/logger';
 import { NotFoundError } from '../errors/NotFoundError';
 import { Club } from '../models/Club';
 import { ClubService } from '../services/ClubService';
@@ -11,11 +13,13 @@ import { ClubService } from '../services/ClubService';
 export class ClubController {
 
     constructor(
-        private clubService: ClubService
+        private clubService: ClubService,
+        @Logger(__filename) private log: LoggerInterface
     ) { }
 
     @Get()
     public find(): Promise<Club[]> {
+        this.log.debug('finded ! ');
         return this.clubService.find();
     }
 
