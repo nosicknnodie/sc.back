@@ -5,6 +5,7 @@
         "tsconfig.build.json": true,
     },
     "importSorter.generalConfiguration.sortOnBeforeSave": true,
+    "typescript.preferences.importModuleSpecifier": "relative",
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": {
