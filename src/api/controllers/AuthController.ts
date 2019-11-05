@@ -1,8 +1,9 @@
 import { Response } from 'express';
-import { BodyParam, JsonController, Post, Res } from 'routing-controllers';
+import { BodyParam, JsonController, OnUndefined, Post, Res } from 'routing-controllers';
 
 import { AuthService } from '../../auth/AuthService';
 import { Logger, LoggerInterface } from '../../decorators/Logger';
+import { NotFoundError } from '../errors/NotFoundError';
 import { User } from '../models/User';
 import { UserToken } from '../models/UserToken';
 import { UserTokenService } from '../services/UserTokenService';
@@ -22,7 +23,8 @@ export class AuthController {
      * @param res 헤더저장
      */
     @Post('/login')
-    public async login(@BodyParam('email') email: string, @BodyParam('password') password: string, @BodyParam('hostName') hostName: string, @Res() res: Response): Promise<User> {
+    @OnUndefined(NotFoundError)
+    public async login(@BodyParam('email') email: string, @BodyParam('password') password: string, @BodyParam('hostName') hostName: string, @Res() res: Response): Promise<User | undefined> {
 
         // 1. email, password 받아서 회원이 있는지 여부 확인.
         const authUser: User|undefined = await this.authService.validateUser(email, password);

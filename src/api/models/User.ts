@@ -39,7 +39,7 @@ export class User extends BaseModel {
 
     @IsNotEmpty()
     @Column()
-    @Exclude()
+    @Exclude({toPlainOnly: true})
     public password: string;
 
     @IsNotEmpty()

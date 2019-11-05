@@ -16,7 +16,7 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
     public error(error: HttpError, req: express.Request, res: express.Response, next: express.NextFunction): void {
         res.status(error.httpCode || 500);
         res.json({
-            name: error.name,
+            result: error.name,
             message: error.message,
             errors: error[`errors`] || [],
         });
@@ -24,7 +24,7 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
         if (this.isProduction) {
             this.log.error(error.name, error.message);
         } else {
-            this.log.error(error.name, error.stack);
+            this.log.error(error.name, error.httpCode, error.stack);
         }
 
     }

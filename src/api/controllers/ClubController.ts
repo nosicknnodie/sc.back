@@ -1,5 +1,5 @@
 import {
-    Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
+    Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
 } from 'routing-controllers';
 
 import { Logger } from '../../decorators/Logger';
@@ -8,7 +8,7 @@ import { NotFoundError } from '../errors/NotFoundError';
 import { Club } from '../models/Club';
 import { ClubService } from '../services/ClubService';
 
-@Authorized()
+// @Authorized()
 @JsonController('/clubs')
 export class ClubController {
 

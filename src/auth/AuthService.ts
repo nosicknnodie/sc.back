@@ -114,8 +114,8 @@ export class AuthService {
                 email,
             },
         });
-        this.log.debug('user.password : ' + password);
-        if (await User.comparePassword(findUser, password)) {
+
+        if (findUser && await User.comparePassword(findUser, password)) {
             return findUser;
         }
 
