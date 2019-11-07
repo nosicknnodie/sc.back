@@ -36,7 +36,9 @@ export function authorizationChecker(connection: Connection): (action: Action, r
                     // refresh token 검증
                     payload = authService.verifyRefreshToken(refreshToken);
                     // db 검증
+                    // log.debug('로그 1');
                     const token: UserToken = await userTokenService.findToken(payload._id, payload.hostName, refreshToken);
+                    // log.debug('로그 2');
                     if (token) {    // 검증 완료
                         const _accessToken = authService.createAccessToken({
                             _id: payload._id,
@@ -45,14 +47,14 @@ export function authorizationChecker(connection: Connection): (action: Action, r
                         });
                         // access cookie 생성
                         authService.createAccessCookie(action.response, _accessToken);
-                        return true;
                     }
                 } catch (err) {
                     log.error(err);
                     return false;
                 }
+            } else {
+                return false;
             }
-            return false;
         } else {
             try {
                 payload = jwt.verify(accessToken, env.jwt.secret) as IpayLoad;
@@ -62,7 +64,7 @@ export function authorizationChecker(connection: Connection): (action: Action, r
             }
         }
         log.info('Successfully checked credentials');
-        action.request.user = payload;
+        action.request.payload = payload;
         return true;
     };
 }

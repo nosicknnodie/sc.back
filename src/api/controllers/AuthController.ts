@@ -1,5 +1,7 @@
 import { Response } from 'express';
-import { BodyParam, JsonController, OnUndefined, Post, Res } from 'routing-controllers';
+import {
+    Authorized, BodyParam, CurrentUser, Get, JsonController, OnUndefined, Post, Res
+} from 'routing-controllers';
 
 import { AuthService } from '../../auth/AuthService';
 import { Logger, LoggerInterface } from '../../decorators/Logger';
@@ -13,9 +15,16 @@ export class AuthController {
 
     constructor(
         private authService: AuthService,
+        // private userService: UserService,
         private userTokenService: UserTokenService,
         @Logger(__filename) private log: LoggerInterface
     ) { }
+
+    @Authorized()
+    @Get('/login')
+    public checkLogin(@CurrentUser({ required: true }) user: User): User {
+        return user;
+    }
 
     /**
      * 로그인 (토큰 생성 및 저장)
@@ -47,17 +56,22 @@ export class AuthController {
             const refreshToken = this.authService.createRefreshToken(refreshPayload);
 
             // 4. refresh token db 저장
+            // this.log.debug('login 1');
             const userToken = new UserToken();
             userToken.userIdx = authUser.idx;
             userToken.hostName = hostName;
             userToken.token = refreshToken;
+            // this.log.debug('login 2');
             try {
                 await this.userTokenService.create(userToken);
+                // this.log.debug('login 3');
                 // await this.userTokenService.findToken(authUser.idx, hostName, refreshToken);
                 // 5. cookie access token 저장
                 this.authService.createAccessCookie(res, accessToken);
+                // this.log.debug('login 4');
                 // 6. cookie refresh token 저장
                 this.authService.createRefreshCookie(res, refreshToken);
+                // this.log.debug('login 5');
             } catch (err) {
                 this.log.error(err);
             }

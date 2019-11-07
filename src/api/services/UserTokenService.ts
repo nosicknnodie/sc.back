@@ -20,13 +20,16 @@ export class UserTokenService {
     }
 
     public findToken(userIdx: string, hostName: string, token: string): Promise<UserToken | undefined> {
-        return this.userTokenRepository.findOneOrFail({ userIdx, hostName, token});
+        return this.userTokenRepository.findOne({ userIdx, hostName, token});
     }
 
     public async create(userToken: UserToken): Promise<UserToken | undefined> {
         // user_idx, hostName 비교하여 있으면 수정 없으면 생성
-        const currentToken = await this.userTokenRepository.findOneOrFail({ userIdx: userToken.userIdx, hostName: userToken.hostName });
+        // this.log.debug('create 1');
+        const currentToken = await this.userTokenRepository.findOne({ userIdx: userToken.userIdx, hostName: userToken.hostName });
+        // this.log.debug('create 2');
         if (currentToken) { userToken.idx = currentToken.idx; } else { userToken.idx = uuid.v1(); }
+        // this.log.debug('create 3');
         this.log.info('Create a new userToken => ', userToken.toString());
         return this.userTokenRepository.save(userToken);
     }
