@@ -1,5 +1,5 @@
 import {
-    Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
+    Authorized, Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put, QueryParam
 } from 'routing-controllers';
 
 import { Logger } from '../../decorators/Logger';
@@ -18,9 +18,9 @@ export class ClubController {
     ) { }
 
     @Get()
-    public find(): Promise<Club[]> {
-        this.log.debug('finded ! ');
-        return this.clubService.find();
+    public find(@QueryParam('qr') qr: string): Promise<[Club[], number]> {
+        this.log.debug('finded ! ' + qr);
+        return this.clubService.finds(qr);
     }
 
     @Get('/:idx')

@@ -80,6 +80,7 @@ export class AuthService {
      */
     public createAccessCookie(res: express.Response, token: string): void {
         res.cookie(env.jwt.accessName, token, this.accessCookieOptions);
+        // this.log.debug(`env.jwt.accessName : ${env.jwt.accessName}`);
     }
 
     /**

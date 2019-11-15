@@ -46,7 +46,9 @@ export function authorizationChecker(connection: Connection): (action: Action, r
                             name: payload.name,
                         });
                         // access cookie 생성
+                        // log.debug('log 1');
                         authService.createAccessCookie(action.response, _accessToken);
+                        // log.debug('log 2');
                     }
                 } catch (err) {
                     log.error(err);

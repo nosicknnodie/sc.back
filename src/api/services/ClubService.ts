@@ -1,4 +1,5 @@
 import { Service } from 'typedi';
+import { Like } from 'typeorm';
 import { OrmRepository } from 'typeorm-typedi-extensions';
 import uuid from 'uuid';
 
@@ -25,6 +26,11 @@ export class ClubService {
     public findOne(idx: string): Promise<Club | undefined> {
         this.log.info('Find one club');
         return this.clubRepository.findOne({ idx });
+    }
+
+    public finds(qr: string): Promise<[Club[], number]> {
+        this.log.info('Find Search Club');
+        return this.clubRepository.findAndCount({ where : [{name: Like(`%${qr}%`)}, {area: Like(`%${qr}%`)}]});
     }
 
     public async create(club: Club): Promise<Club> {
