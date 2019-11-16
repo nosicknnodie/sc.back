@@ -1,5 +1,5 @@
 import {
-    Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put, Req
+    Body, Delete, Get, JsonController, OnUndefined, Param, Post, Put
 } from 'routing-controllers';
 
 import { UserNotFoundError } from '../errors/UserNotFoundError';
@@ -17,11 +17,6 @@ export class UserController {
     @Get()
     public find(): Promise<User[]> {
         return this.userService.find();
-    }
-
-    @Get('/me')
-    public findMe(@Req() req: any): Promise<User[]> {
-        return req.user;
     }
 
     @Get('/:id')

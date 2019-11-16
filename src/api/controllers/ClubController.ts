@@ -19,7 +19,7 @@ export class ClubController {
 
     @Get()
     public find(@QueryParam('qr') qr: string): Promise<[Club[], number]> {
-        this.log.debug('finded ! ' + qr);
+        this.log.debug('finded ! ');
         return this.clubService.finds(qr);
     }
 

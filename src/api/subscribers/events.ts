@@ -22,4 +22,7 @@ export const events = {
     clubTeamMem: {
         created: 'onclubTeamMemCreate',
     },
+    uploadFile: {
+        created: 'onUploadFileCreate',
+    },
 };
